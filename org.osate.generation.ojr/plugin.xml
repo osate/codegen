@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="fr.tpt.aadl.ramses.control.support.generator">
+      <generator
+            class="org.osate.generation.ojr.java.OjrGeneratorFactory"
+            id="fr.tpt.aadl.ramses.generation.target.ojr"
+            transformationName="ojr">
+      </generator>
+   </extension>
+</plugin>
