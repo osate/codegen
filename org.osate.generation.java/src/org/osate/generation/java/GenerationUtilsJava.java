@@ -49,7 +49,7 @@ public class GenerationUtilsJava
 	{
 		String tmp = res.substring(i, i + 3);
 		String tmp2 = tmp.toUpperCase().substring(2,3);
-		res = res.replaceAll(tmp, "." + tmp2);
+		res = res.replaceAll(tmp, tmp2);
 		i = res.indexOf("::");
 	}
 	
