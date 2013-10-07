@@ -444,6 +444,10 @@ public AadlBaToJavaUnparser(AnnexSubclause subclause,
         {
         	_codeContent.addOutput(" = "+init) ;
         }
+        else
+        {
+        	_codeContent.addOutput(" = null") ;	
+        }
         _codeContent.addOutputNewline(";") ;
         
         
@@ -479,12 +483,13 @@ public AadlBaToJavaUnparser(AnnexSubclause subclause,
     	    }
     		catch(Exception e)
     		{
-    			_codeContent.addOutput(GenerationUtilsJava.getGenerationJavaIdentifier(component.getQualifiedName())+"_"+object.getEnumLiteral().getValue());
+    			_codeContent.addOutput(GenerationUtilsJava.getGenerationJavaType(component.getQualifiedName()) + "." + GenerationUtilsJava.getGenerationJavaIdentifier(component.getQualifiedName())+"_"+object.getEnumLiteral().getValue());
     		}
     	}
     	else
+    	{
     		_codeContent.addOutput(object.getEnumLiteral().getValue());
-        
+    	}
         return DONE ;
       }
       

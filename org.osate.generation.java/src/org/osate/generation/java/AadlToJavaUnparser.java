@@ -241,9 +241,9 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
     	  sp.decrementIndent();
           sp.addOutputNewline("}");
 
-          FileWriter activityClass =
+          FileWriter typeClass =
                 new FileWriter(targetDirectory.getAbsolutePath() + "/" + GenerationUtilsJava.getGenerationJavaType(ne.getQualifiedName())+ ".java") ;
-          saveFile(activityClass, sp.getOutput()) ; 
+          saveFile(typeClass, sp.getOutput()) ; 
       }
       // Types.java
       
@@ -472,6 +472,7 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
   
   protected void getJavaTypeDeclarator(NamedElement object)
   {
+
 	AadlToJavaSwitchProcess _typesClass = new AadlToJavaSwitchProcess(_instance);
 	_typesClasses.put(object, _typesClass);
 	
@@ -481,9 +482,6 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
     TypeHolder dataTypeHolder = null ;
     _typesClass.addOutputNewline("package generatedcode;") ;
 
-    _typesClass.addOutputNewline("public class " + GenerationUtilsJava.getGenerationJavaType(id)) ;
-    _typesClass.addOutputNewline("{") ;
-    _typesClass.incrementIndent();
 
     try
     {
@@ -570,7 +568,11 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
       // Complex types
       case ENUM :
       {
-    	StringBuilder enumDeclaration = new StringBuilder("enum Enum" + GenerationUtilsJava.getGenerationJavaType(id) + " {\n");
+
+    	_typesClass.addOutputNewline("public enum " + GenerationUtilsJava.getGenerationJavaType(id)) ;
+    	_typesClass.addOutputNewline("{") ;
+    	_typesClass.incrementIndent();
+    	StringBuilder enumDeclaration = new StringBuilder();
         List<String> stringifiedRepresentation = new ArrayList<String>() ;
         EList<PropertyExpression> dataRepresentation =
               PropertyUtils
@@ -636,7 +638,7 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
         }
 
         _typesClass.addOutput(enumDeclaration.toString()) ;
-        _typesClass.addOutputNewline("}") ;
+        
         break ;
       }
       case STRUCT :
@@ -866,9 +868,22 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
           return DONE ;
         }
         _processedTypes.add(object.getQualifiedName());
-        getJavaTypeDeclarator((NamedElement) object) ;
-        _typesClasses.get(object).processComments(object) ;
-
+        
+        boolean hasSourceName = false;
+        try {
+			if (PropertyUtils.getStringValue(object, "Source_Name") != null)
+			{
+				hasSourceName = true;
+			}
+		} catch (Exception e) {
+			hasSourceName = false;
+		}
+        
+        if (! hasSourceName)
+        {
+		    getJavaTypeDeclarator((NamedElement) object) ;
+		    _typesClasses.get(object).processComments(object) ;
+	    }
         return DONE ;
       }
 
