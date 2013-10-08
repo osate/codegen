@@ -1023,10 +1023,12 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
         for(DataSubcomponent ds: object.getOwnedDataSubcomponents())
         {
           dataSubcomponentNames.add(ds.getName());
-          if(false == _dataAccessMapping.containsValue(ds.getName()))
+          
+          if(! _dataAccessMapping.containsValue(ds.getName()))
           {
+        	  _deploymentClass.addOutput("public static ") ;
         	  processDataSubcomponentType(ds.getDataSubcomponentType(), _deploymentClass, _deploymentClass);
-        	  _deploymentClass.addOutput(" "+ds.getName()) ;
+        	  _deploymentClass.addOutput(" "+ GenerationUtilsJava.getGenerationJavaIdentifier(ds.getName())) ;
         	  _deploymentClass.addOutput(GeneratorUtils.getInitialValue(ds,"java")) ;
         	  _deploymentClass.addOutputNewline(";") ;
           }
@@ -1037,7 +1039,7 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
           process(ds.getDataSubcomponentType());
         }
         // *** Generate deployment.c ***
-        if(false == _dataAccessMapping.isEmpty())
+        if(! _dataAccessMapping.isEmpty())
         {
           List<String> treatedDeclarations = new ArrayList<String>();
           for(DataAccess d : _dataAccessMapping.keySet())
@@ -1050,8 +1052,10 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
         	{
         	  DataSubcomponentType dst = d.getDataFeatureClassifier();
         	  String declarationID = _dataAccessMapping.get(d);
+              _deploymentClass.addOutput("public static ");
+
               processDataSubcomponentType(dst, _deploymentClass, _deploymentClass);
-              _deploymentClass.addOutput(" "+declarationID);
+              _deploymentClass.addOutput(" "+ GenerationUtilsJava.getGenerationJavaIdentifier(declarationID));
               DataSubcomponent ds = dataSubcomponentMapping.get(_dataAccessMapping.get(d));
               if(ds!=null)
             	  _deploymentClass.addOutput(GeneratorUtils.getInitialValue(ds,"java")) ;
@@ -1299,14 +1303,16 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
   			{
   			  _subprogramsClass.addOutput(", ") ;
   			}
+  			
+
   			processDataSubcomponentType(object, p.getDataFeatureClassifier(), _subprogramsClass, _subprogramsClass);
-  			processDataSubcomponentType(object, p.getDataFeatureClassifier(), _subprogramsClass, _subprogramsClass);
-  			if(Aadl2Utils.isInOutParameter(p) ||
-  					Aadl2Utils.isOutParameter(p)
-  					|| paramUsage.equalsIgnoreCase("by_reference"))
-  			{
-  			  _subprogramsClass.addOutput(" * ") ;
-  			}
+ 
+//  			if(Aadl2Utils.isInOutParameter(p) ||
+//  					Aadl2Utils.isOutParameter(p)
+//  					|| paramUsage.equalsIgnoreCase("by_reference"))
+//  			{
+//  			  _subprogramsClass.addOutput(" * ") ;
+//  			}
   			_subprogramsClass.addOutput(" "+p.getName());
   			first=false;
   			
@@ -1320,15 +1326,15 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
   			  _subprogramsClass.addOutput(", ") ;
   			}
   			processDataSubcomponentType(object, da.getDataFeatureClassifier(), _subprogramsClass, _currentClass);
-  			processDataSubcomponentType(object, da.getDataFeatureClassifier(), _subprogramsClass, _subprogramsClass);
+  			//processDataSubcomponentType(object, da.getDataFeatureClassifier(), _subprogramsClass, _subprogramsClass);
   			if(da.getKind().equals(AccessType.REQUIRES))
   			{
-  			  if(Aadl2Utils.isReadWriteDataAccess(da) ||
-  					  Aadl2Utils.isWriteOnlyDataAccess(da))
-  			  {
-  				_subprogramsClass.addOutput(" * ") ;
-  			  }
-  			  _subprogramsClass.addOutput(" "+da.getName());
+//  			  if(Aadl2Utils.isReadWriteDataAccess(da) ||
+//  					  Aadl2Utils.isWriteOnlyDataAccess(da))
+//  			  {
+//  				_subprogramsClass.addOutput(" * ") ;
+//  			  }
+  			  _subprogramsClass.addOutput(" "+ GenerationUtilsJava.getGenerationJavaIdentifier(da.getName()));
   			}
   			first=false;
   			
@@ -1447,12 +1453,12 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
     					  if(first==false)
     						  _currentClass.addOutput(", ") ;
     					  String paramUsage = Aadl2Utils.getParameter_Usage(p);
-    					  if(Aadl2Utils.isInOutParameter(p) ||
-    							  Aadl2Utils.isOutParameter(p)
-    							  || paramUsage.equalsIgnoreCase("by_reference"))
-    					  {
-    						  _currentClass.addOutput("&") ;
-    					  }
+//    					  if(Aadl2Utils.isInOutParameter(p) ||
+//    							  Aadl2Utils.isOutParameter(p)
+//    							  || paramUsage.equalsIgnoreCase("by_reference"))
+//    					  {
+//    						  _currentClass.addOutput("&") ;
+//    					  }
     					  ConnectionEnd ce = orderedParamValue.get(orderedFeatureList.indexOf(p));
     					  if(ce != null)
 						    processConnectionEnd(ce);
@@ -1463,14 +1469,14 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
     					  DataAccess da = (DataAccess) feature ;
     					  if(first==false)
     						  _currentClass.addOutput(", ") ;
-    					  if(da.getKind().equals(AccessType.REQUIRES))
-    					  {
-    						  if(Aadl2Utils.isReadWriteDataAccess(da)
-    								  || Aadl2Utils.isWriteOnlyDataAccess(da))
-    						  {
-    							  _currentClass.addOutput("&") ;
-    						  }
-    					  }
+//    					  if(da.getKind().equals(AccessType.REQUIRES))
+//    					  {
+//    						  if(Aadl2Utils.isReadWriteDataAccess(da)
+//    								  || Aadl2Utils.isWriteOnlyDataAccess(da))
+//    						  {
+//    							  _currentClass.addOutput("&") ;
+//    						  }
+//    					  }
 
     					  String name = null ;
 
@@ -1485,7 +1491,7 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
 
     					  if (name != null)
     					  {
-    						  _currentClass.addOutput("Deployment." + name);
+    						  _currentClass.addOutput("Deployment." + GenerationUtilsJava.getGenerationJavaIdentifier(name));
     					  }
     					  else
     					  {

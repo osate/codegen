@@ -903,29 +903,29 @@ public AadlBaToJavaUnparser(AnnexSubclause subclause,
           	  ParameterHolder ph = (ParameterHolder) actual;
           	  String usage = Aadl2Utils.getParameter_Usage(ph.getParameter());
           	  // in out passed to in
-          	  if(!Aadl2Utils.isOutParameter(ph.getParameter()) &&
-          		!Aadl2Utils.isInOutParameter(ph.getParameter())
-          		&& !usage.equalsIgnoreCase("by_reference"))
-          		// and ph.getParameter not by reference
-          		  _codeContent.addOutput("*") ;
+//          	  if(!Aadl2Utils.isOutParameter(ph.getParameter()) &&
+//          		!Aadl2Utils.isInOutParameter(ph.getParameter())
+//          		&& !usage.equalsIgnoreCase("by_reference"))
+//          		// and ph.getParameter not by reference
+//          		  _codeContent.addOutput("*") ;
           		  
             }
-            else if (actual instanceof DataSubcomponentHolder
-          		  || actual instanceof BehaviorVariableHolder)
-          	  _codeContent.addOutput("&") ;
-            else if (actual instanceof DataComponentReference)
-            {
-          	  _codeContent.addOutput("&(") ;
-          	  remainingParenthesis=true;
-            }
-            else if(actual instanceof DataAccessHolder)
-            {
-              DataAccessHolder dah = (DataAccessHolder) actual;
-              if(!Aadl2Utils.isReadWriteDataAccess(dah.getDataAccess()) &&
-            		  !Aadl2Utils.isWriteOnlyDataAccess(dah.getDataAccess()))
-            	  //TODO: and dah.getAccess not by reference
-            	  _codeContent.addOutput("*") ;
-            }
+//            else if (actual instanceof DataSubcomponentHolder
+//          		  || actual instanceof BehaviorVariableHolder)
+//          	  _codeContent.addOutput("&") ;
+//            else if (actual instanceof DataComponentReference)
+//            {
+//          	  _codeContent.addOutput("&(") ;
+//          	  remainingParenthesis=true;
+//            }
+//            else if(actual instanceof DataAccessHolder)
+//            {
+//              DataAccessHolder dah = (DataAccessHolder) actual;
+//              if(!Aadl2Utils.isReadWriteDataAccess(dah.getDataAccess()) &&
+//            		  !Aadl2Utils.isWriteOnlyDataAccess(dah.getDataAccess()))
+//            	  //TODO: and dah.getAccess not by reference
+//            	  _codeContent.addOutput("*") ;
+//            }
             else if(actual instanceof ValueExpression)
             {
           	  ValueExpression ve = (ValueExpression) actual;
@@ -955,18 +955,18 @@ public AadlBaToJavaUnparser(AnnexSubclause subclause,
           	  ParameterHolder ph = (ParameterHolder) actual;
           	  String usagePH = Aadl2Utils.getParameter_Usage(ph.getElement());
           	  // in to inout
-          	  if(Aadl2Utils.isOutParameter(ph.getParameter()) ||
-              	Aadl2Utils.isInOutParameter(ph.getParameter()) ||
-              	  usagePH.equalsIgnoreCase("by_reference"))
-          		  _codeContent.addOutput("*") ;
+//          	  if(Aadl2Utils.isOutParameter(ph.getParameter()) ||
+//              	Aadl2Utils.isInOutParameter(ph.getParameter()) ||
+//              	  usagePH.equalsIgnoreCase("by_reference"))
+//          		  _codeContent.addOutput("*") ;
             }
           	else if(actual instanceof DataAccessHolder)
             {
               DataAccessHolder dah = (DataAccessHolder) actual;
-              if(Aadl2Utils.isReadWriteDataAccess(dah.getDataAccess()) &&
-            		  Aadl2Utils.isWriteOnlyDataAccess(dah.getDataAccess()))
-            	  //TODO: and dah.getAccess not by reference
-            	  _codeContent.addOutput("*") ;
+//              if(Aadl2Utils.isReadWriteDataAccess(dah.getDataAccess()) &&
+//            		  Aadl2Utils.isWriteOnlyDataAccess(dah.getDataAccess()))
+//            	  //TODO: and dah.getAccess not by reference
+//            	  _codeContent.addOutput("*") ;
             }
             else if(actual instanceof ValueExpression)
             {
@@ -998,10 +998,10 @@ public AadlBaToJavaUnparser(AnnexSubclause subclause,
         	{
         	  DataAccessHolder dah = (DataAccessHolder) actual;
         	  // in out passed to in
-          	  if(!Aadl2Utils.isReadWriteDataAccess(dah.getDataAccess()) &&
-          		!Aadl2Utils.isWriteOnlyDataAccess(dah.getDataAccess()))
-          		//TODO: and dah.getAccess not by reference
-          		  _codeContent.addOutput("*") ;
+//          	  if(!Aadl2Utils.isReadWriteDataAccess(dah.getDataAccess()) &&
+//          		!Aadl2Utils.isWriteOnlyDataAccess(dah.getDataAccess()))
+//          		//TODO: and dah.getAccess not by reference
+//          		  _codeContent.addOutput("*") ;
         	}
         	else if(actual instanceof DataSubcomponentHolder
         			|| actual instanceof BehaviorVariableHolder)
@@ -1019,9 +1019,9 @@ public AadlBaToJavaUnparser(AnnexSubclause subclause,
           	{
           		DataAccessHolder dah = (DataAccessHolder) actual;
           		// in to inout
-        		if(Aadl2Utils.isWriteOnlyDataAccess(dah.getDataAccess()) ||
-            		Aadl2Utils.isReadWriteDataAccess(dah.getDataAccess()))
-        			_codeContent.addOutput("*") ;
+//        		if(Aadl2Utils.isWriteOnlyDataAccess(dah.getDataAccess()) ||
+//            		Aadl2Utils.isReadWriteDataAccess(dah.getDataAccess()))
+//        			_codeContent.addOutput("*") ;
           	}
           }
     	  return remainingParenthesis;
@@ -1271,13 +1271,13 @@ public AadlBaToJavaUnparser(AnnexSubclause subclause,
 			if(false==(object.eContainer() instanceof SubprogramCallAction))
 			{
 			  String usageP = Aadl2Utils.getParameter_Usage(p);
-			  if(Aadl2Utils.isInOutParameter(p)
-				  || Aadl2Utils.isOutParameter(p)
-				  || usageP.equalsIgnoreCase("by_reference"))
-			  {
-			    aadlbaText.addOutput("(*");
-			    pointer=true;
-			  }
+//			  if(Aadl2Utils.isInOutParameter(p)
+//				  || Aadl2Utils.isOutParameter(p)
+//				  || usageP.equalsIgnoreCase("by_reference"))
+//			  {
+//			    aadlbaText.addOutput("(*");
+//			    pointer=true;
+//			  }
 			
 			}
 			id = elt.getName();
@@ -1289,12 +1289,12 @@ public AadlBaToJavaUnparser(AnnexSubclause subclause,
 		  
 		  if(false==(object.eContainer() instanceof SubprogramCallAction))
 		  {
-			if(Aadl2Utils.isReadWriteDataAccess(da)
-			  || Aadl2Utils.isWriteOnlyDataAccess(da))
-			{
-  			   aadlbaText.addOutput("(*");
-			   pointer=true;		
-			}
+//			if(Aadl2Utils.isReadWriteDataAccess(da)
+//			  || Aadl2Utils.isWriteOnlyDataAccess(da))
+//			{
+//  			   aadlbaText.addOutput("(*");
+//			   pointer=true;		
+//			}
 		  }
   		  id = elt.getName();
 		}
