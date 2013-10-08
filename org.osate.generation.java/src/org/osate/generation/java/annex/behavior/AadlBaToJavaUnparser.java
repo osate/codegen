@@ -438,7 +438,7 @@ public AadlBaToJavaUnparser(AnnexSubclause subclause,
         _codeContent.addOutput(sourceName);
         _codeContent.addOutput(" " + object.getName()) ;
         caseArrayDimensions(object.getArrayDimensions()) ;
-        String init = GeneratorUtils.getInitialValue(object.getDataClassifier()) ;
+        String init = GeneratorUtils.getInitialValue(object.getDataClassifier(), "java") ;
         coreElementsToBeUnparsed.add(object.getDataClassifier());
         if(!init.isEmpty())
         {

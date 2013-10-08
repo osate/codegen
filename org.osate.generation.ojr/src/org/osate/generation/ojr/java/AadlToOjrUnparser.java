@@ -554,31 +554,7 @@ private BehaviorAnnex getBa(FeatureInstance fi) {
 //            .addOutputNewline(
 //                    "PROCESS_ID_TYPE arinc_threads[POK_CONFIG_NB_THREADS];") ;
 //    }
-    
-    // Generate blackboard names array.
-    if(pp.hasBlackboard)
-    {
-      mainImplCode.addOutput("char* pok_blackboards_names[POK_CONFIG_NB_BLACKBOARDS] = {") ;
-
-      for(BlackBoardInfo info : pp.blackboardInfo)
-      {
-        mainImplCode.addOutput("\"") ;
-        mainImplCode.addOutput(info.id) ;
-        mainImplCode.addOutput("\",") ;
-      }
-
-      mainImplCode.addOutputNewline("};") ;
-      int i = 0;
-      // Generate external variable (declared in deployment.c).
-      for(BlackBoardInfo info : pp.blackboardInfo)
-      {
-        mainImplCode.addOutput("BLACKBOARD_ID_TYPE ") ;
-        mainImplCode.addOutput(info.id) ;
-        mainImplCode.addOutputNewline("=" + Integer.toString(i) +";") ;
-        i++;
-      }
-    }
-    
+        
     // Generate event names array.
     if(pp.hasEvent)
     {

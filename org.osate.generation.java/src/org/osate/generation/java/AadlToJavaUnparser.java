@@ -960,7 +960,7 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
         unparser.addOutput(" ") ;
         unparser.addOutput(GenerationUtilsJava.getGenerationJavaIdentifier(object
               .getQualifiedName())) ;
-        unparser.addOutput(GeneratorUtils.getInitialValue(object)) ;
+        unparser.addOutput(GeneratorUtils.getInitialValue(object, "java")) ;
         unparser.addOutputNewline(";") ;
 
         if(_processedTypes.contains(object.getDataSubcomponentType().getQualifiedName()) == false)
@@ -1027,7 +1027,7 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
           {
         	  processDataSubcomponentType(ds.getDataSubcomponentType(), _deploymentClass, _deploymentClass);
         	  _deploymentClass.addOutput(" "+ds.getName()) ;
-        	  _deploymentClass.addOutput(GeneratorUtils.getInitialValue(ds)) ;
+        	  _deploymentClass.addOutput(GeneratorUtils.getInitialValue(ds,"java")) ;
         	  _deploymentClass.addOutputNewline(";") ;
           }
           else
@@ -1054,7 +1054,7 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
               _deploymentClass.addOutput(" "+declarationID);
               DataSubcomponent ds = dataSubcomponentMapping.get(_dataAccessMapping.get(d));
               if(ds!=null)
-            	  _deploymentClass.addOutput(GeneratorUtils.getInitialValue(ds)) ;
+            	  _deploymentClass.addOutput(GeneratorUtils.getInitialValue(ds,"java")) ;
               _deploymentClass.addOutputNewline(";") ;
               treatedDeclarations.add(declarationID);
         	}
@@ -1485,7 +1485,7 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
 
     					  if (name != null)
     					  {
-    						  _currentClass.addOutput(name);
+    						  _currentClass.addOutput("Deployment." + name);
     					  }
     					  else
     					  {
@@ -1555,39 +1555,39 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
        */
       public String caseDataAccess(DataAccess object)
       {
-        _currentClass.addOutput("extern ") ;
-        
-        String dataSubprogramName = null ;
-        
-        if(_dataAccessMapping != null)
-        {
-          dataSubprogramName = _dataAccessMapping.get(object) ;
-        }
-        
-        
-        try
-        {
-          resolveExistingCodeDependencies(object.getDataFeatureClassifier(),
-                               _currentClass);
-        }
-        catch(Exception e)
-        {
-          _currentClass.addOutput(GenerationUtilsJava
-                .getGenerationJavaIdentifier(object.getDataFeatureClassifier()
-                      .getQualifiedName())) ;
-        }
-        _currentClass.addOutput(" ") ;
-        if(dataSubprogramName != null)
-        {
-          _currentClass.addOutput(dataSubprogramName);
-        }
-        else
-        {
-          _currentClass.addOutput(GenerationUtilsJava
-                .getGenerationJavaIdentifier(object.getQualifiedName())) ;
-        }
-
-        _currentClass.addOutputNewline(";") ;
+//        _currentClass.addOutput("extern ") ;
+//        
+//        String dataSubprogramName = null ;
+//        
+//        if(_dataAccessMapping != null)
+//        {
+//          dataSubprogramName = _dataAccessMapping.get(object) ;
+//        }
+//        
+//        
+//        try
+//        {
+//          resolveExistingCodeDependencies(object.getDataFeatureClassifier(),
+//                               _currentClass);
+//        }
+//        catch(Exception e)
+//        {
+//          _currentClass.addOutput(GenerationUtilsJava
+//                .getGenerationJavaIdentifier(object.getDataFeatureClassifier()
+//                      .getQualifiedName())) ;
+//        }
+//        _currentClass.addOutput(" ") ;
+//        if(dataSubprogramName != null)
+//        {
+//          _currentClass.addOutput(dataSubprogramName);
+//        }
+//        else
+//        {
+//          _currentClass.addOutput(GenerationUtilsJava
+//                .getGenerationJavaIdentifier(object.getQualifiedName())) ;
+//        }
+//
+//        _currentClass.addOutputNewline(";") ;
         
         
         return DONE ;
