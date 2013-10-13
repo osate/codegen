@@ -15,7 +15,7 @@ public class Services
 
 	public static void createTask (Thread t, int taskIdentifier, int taskPeriod)
 	{
-		System.out.println("[Services] Create task id " + taskIdentifier);
+		Debug.debug("[Services] Create task id " + taskIdentifier);
 		Task task = new Task(t);
 		task.setIdentifier(taskIdentifier);
 		task.setPeriod (taskPeriod); 
@@ -25,7 +25,7 @@ public class Services
 	
 	public static void WaitNextPeriod (Status status)
 	{
-		System.out.println("[Services] WaitNextPeriod");
+		Debug.debug("[Services] WaitNextPeriod");
 
 		for (Task t : tasks)
 		{

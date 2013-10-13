@@ -1,9 +1,14 @@
 package org.osate.runtime;
 
-public class Debug {
-
+public class Debug 
+{
+	private final static boolean USE_DEBUG = false;
+	
 	public static void debug (String str)
 	{
-		System.err.println ("[OJR] " + str);
+		if (USE_DEBUG)
+		{
+			System.err.println ("[OJR] " + str);
+		}
 	}
 }

@@ -33,6 +33,7 @@ import org.osate.aadl2.instance.FeatureCategory;
 import org.osate.aadl2.instance.FeatureInstance;
 import org.osate.aadl2.instance.SystemInstance;
 import org.osate.aadl2.modelsupport.UnparseText;
+import org.osate.aadl2.util.OsateDebug;
 import org.osate.generation.java.GenerationUtilsJava;
 import org.osate.xtext.aadl2.properties.util.GetProperties;
 
@@ -54,7 +55,7 @@ public class AadlToOjrUnparser implements AadlTargetUnparser
   
   // TODO: factorization with ATL transformation into a naming class or enum. 
   public final static String BLACKBOARD_AADL_TYPE = 
-                                             "arinc653_runtime::Blackboard_Id_Type" ;
+                                             "ojr_runtime::InternalPortSampled" ;
   
   public final static String QUEUING_AADL_TYPE =
                                            "arinc653_runtime::Queuing_Port_Id_Type" ;
@@ -66,7 +67,7 @@ public class AadlToOjrUnparser implements AadlTargetUnparser
                                           "arinc653_runtime::Event_Id_Type" ;
   
   public final static String BUFFER_AADL_TYPE =
-                                          "arinc653_runtime::Buffer_Id_Type" ;
+                                          "ojr_runtime::InternalPortQueued" ;
   
   private ProcessorProperties _processorProp = new ProcessorProperties() ;
   
@@ -465,19 +466,27 @@ private BehaviorAnnex getBa(FeatureInstance fi) {
   private void genBufferMainImpl(UnparseText mainImplCode,
                                 PartitionProperties pp)
  {
-   for(QueueInfo info: pp.bufferInfo)
-   {
-     mainImplCode.addOutput("  CREATE_BUFFER (\"") ;
-     mainImplCode.addOutput(info.id);
-     mainImplCode.addOutput("\",");
-     mainImplCode.addOutput("    sizeof( "+info.dataType+" ), ");
-     mainImplCode.addOutput(Long.toString(info.size)) ;
-     mainImplCode.addOutput(", ");
-     mainImplCode.addOutput(info.type.toUpperCase());
-     mainImplCode.addOutput(",");
-     mainImplCode.addOutput("&"+info.id+",");
-     mainImplCode.addOutputNewline("& (ret));");
-   }
+	   for(QueueInfo info: pp.bufferInfo)
+	   {
+//	     mainImplCode.addOutput(GenerationUtilsJava.getGenerationJavaIdentifier(info.id));
+//	     mainImplCode.addOutput(".setKind (InternalPort.KIND_QUEUED);\n");
+	     mainImplCode.addOutput("Deployment." + GenerationUtilsJava.getGenerationJavaIdentifier(info.id));
+	     mainImplCode.addOutput(".setSize ("+info.size+");\n");
+
+	   }
+//   for(QueueInfo info: pp.bufferInfo)
+//   {
+//     mainImplCode.addOutput("  CREATE_BUFFER (\"") ;
+//     mainImplCode.addOutput(info.id);
+//     mainImplCode.addOutput("\",");
+//     mainImplCode.addOutput("    sizeof( "+info.dataType+" ), ");
+//     mainImplCode.addOutput(Long.toString(info.size)) ;
+//     mainImplCode.addOutput(", ");
+//     mainImplCode.addOutput(info.type.toUpperCase());
+//     mainImplCode.addOutput(",");
+//     mainImplCode.addOutput("&"+info.id+",");
+//     mainImplCode.addOutputNewline("& (ret));");
+//   }
  }
   
   private void genSampleMainImpl(UnparseText mainImplCode,
@@ -579,27 +588,27 @@ private BehaviorAnnex getBa(FeatureInstance fi) {
     }
     
     // Generate buffer names array.
-    if(pp.hasBuffer)
-    {
-      mainImplCode.addOutput("char* pok_buffers_names[POK_CONFIG_NB_BUFFERS] = {") ;
-
-      for(QueueInfo info : pp.bufferInfo)
-      {
-        mainImplCode.addOutput("\"") ;
-        mainImplCode.addOutput(info.id) ;
-        mainImplCode.addOutput("\"") ;
-      }
-
-      mainImplCode.addOutputNewline("};") ;
-      
-      // Generate external variable (declared in deployment.c).
-      for(QueueInfo info : pp.bufferInfo)
-      {
-        mainImplCode.addOutput("BUFFER_ID_TYPE ") ;
-        mainImplCode.addOutput(info.id) ;
-        mainImplCode.addOutputNewline(";") ;
-      }
-    }
+//    if(pp.hasBuffer)
+//    {
+//      mainImplCode.addOutput("char* pok_buffers_names[POK_CONFIG_NB_BUFFERS] = {") ;
+//
+//      for(QueueInfo info : pp.bufferInfo)
+//      {
+//        mainImplCode.addOutput("\"") ;
+//        mainImplCode.addOutput(info.id) ;
+//        mainImplCode.addOutput("\"") ;
+//      }
+//
+//      mainImplCode.addOutputNewline("};") ;
+//      
+//      // Generate external variable (declared in deployment.c).
+//      for(QueueInfo info : pp.bufferInfo)
+//      {
+//        mainImplCode.addOutput("BUFFER_ID_TYPE ") ;
+//        mainImplCode.addOutput(info.id) ;
+//        mainImplCode.addOutputNewline(";") ;
+//      }
+//    }
     
     // Generate queue names array.
     if(pp.hasQueue)
@@ -755,17 +764,22 @@ private void genFileIncludedMainImpl(UnparseText mainImplCode)
   private void genBlackboardMainImpl(UnparseText mainImplCode,
                                      PartitionProperties pp)
   {
+//	  for(BlackBoardInfo info : pp.blackboardInfo)
+//	   {
+//	     mainImplCode.addOutput(GenerationUtilsJava.getGenerationJavaIdentifier(info.id));
+//	     mainImplCode.addOutput(".setKind (InternalPort.KIND_SAMPLED);\n");
+//	   }
     // For each blackboard
-    for(BlackBoardInfo info : pp.blackboardInfo)
-    {
-      
-      mainImplCode.addOutput("  CREATE_BLACKBOARD (\"") ;
-      mainImplCode.addOutput(info.id) ;
-      mainImplCode.addOutput("\", sizeof (" +info.dataType+
-      		"), &(") ;
-      mainImplCode.addOutput(info.id);
-      mainImplCode.addOutputNewline("), &(ret));") ;
-    }
+//    for(BlackBoardInfo info : pp.blackboardInfo)
+//    {
+//      
+//      mainImplCode.addOutput("  CREATE_BLACKBOARD (\"") ;
+//      mainImplCode.addOutput(info.id) ;
+//      mainImplCode.addOutput("\", sizeof (" +info.dataType+
+//      		"), &(") ;
+//      mainImplCode.addOutput(info.id);
+//      mainImplCode.addOutputNewline("), &(ret));") ;
+//    }
   }
   
   
@@ -881,6 +895,7 @@ private void findCommunicationMechanism(ProcessImplementation process,
         else if(((DataSubcomponent) s).getDataSubcomponentType().getQualifiedName()
               .equalsIgnoreCase(BUFFER_AADL_TYPE))
         {
+        	OsateDebug.osateDebug("buffer" + s);
           bufferHandler(s.getName(),
                        (FeatureInstance) HookAccessImpl.
                        getTransformationTrace(s), pp);
