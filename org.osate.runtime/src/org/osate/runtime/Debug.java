@@ -2,7 +2,7 @@ package org.osate.runtime;
 
 public class Debug 
 {
-	private final static boolean USE_DEBUG = false;
+	private final static boolean USE_DEBUG = true;
 	
 	public static void debug (String str)
 	{
