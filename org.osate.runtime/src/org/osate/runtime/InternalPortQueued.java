@@ -28,6 +28,16 @@ public class InternalPortQueued extends InternalPort
 		this.objectsSize [0] = 0;
 	}
 	
+	public int getTimeout ()
+	{
+		return this.timeout;
+	}
+	
+	public void setTimeout (int t)
+	{
+		this.timeout = t;
+	}
+	
 	public void setSize (int newSize)
 	{
 		int tmp[];
@@ -75,6 +85,8 @@ public class InternalPortQueued extends InternalPort
 				Debug.debug("[InternalPortQueued] InterruptedException exception in readObject()");
 				e.printStackTrace();
 			}
+			obj.setValid(false);
+			return;
 		}
 		
 		Debug.debug("[InternalPortQueued] readObject called");
@@ -99,6 +111,7 @@ public class InternalPortQueued extends InternalPort
 		  in = new ObjectInputStream(bis);
 			OjrType newObj = (OjrType) in.readObject();
 			newObj.copy(obj);
+			obj.setValid(true);
 		}
 		catch (IOException ioe)
 		{
@@ -128,10 +141,17 @@ public class InternalPortQueued extends InternalPort
 	public synchronized void  writeObject(OjrType obj) 
 	{
 		int bufpos = 0;
+		
+		if (! obj.isValid())
+		{
+			return;
+		}
+		
 		while (this.actualSize >= this.maxSize)
 		{
 			try 
 			{
+				
 				wait(this.timeout);
 			} 
 			catch (InterruptedException e) 
@@ -176,6 +196,8 @@ public class InternalPortQueued extends InternalPort
 			e.printStackTrace();
 		}
 		  notifyAll();
+			//System.out.println (" write completed");
+
 		Debug.debug("[InternalPortQueued] writeObject completed");
 	}
 	

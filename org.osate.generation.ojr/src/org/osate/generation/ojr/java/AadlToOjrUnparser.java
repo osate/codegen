@@ -306,7 +306,8 @@ private BehaviorAnnex getBa(FeatureInstance fi) {
         }
       }
     }
-    
+    double timeout = GetProperties.getComputeDeadlineinMilliSec(fi);
+    queueInfo.timeout = (int) timeout;
     if(getQueueInfo((Port)fi.getFeature(), queueInfo))
     {
       pp.bufferInfo.add(queueInfo) ;
@@ -471,7 +472,9 @@ private BehaviorAnnex getBa(FeatureInstance fi) {
 //	     mainImplCode.addOutput(GenerationUtilsJava.getGenerationJavaIdentifier(info.id));
 //	     mainImplCode.addOutput(".setKind (InternalPort.KIND_QUEUED);\n");
 	     mainImplCode.addOutput("Deployment." + GenerationUtilsJava.getGenerationJavaIdentifier(info.id));
-	     mainImplCode.addOutput(".setSize ("+info.size+");\n");
+	     mainImplCode.addOutputNewline (".setSize ("+info.size+");");
+	     mainImplCode.addOutput("Deployment." + GenerationUtilsJava.getGenerationJavaIdentifier(info.id));
+	     mainImplCode.addOutput(".setTimeout ("+info.timeout+");\n");
 
 	   }
 //   for(QueueInfo info: pp.bufferInfo)
@@ -1846,6 +1849,8 @@ private void genDeploymentImpl(ProcessorSubcomponent processor,
 	public String uniqueId = null;
     
 	public long size = -1 ;
+	
+	private int timeout = -1;
     
 	public String type = null ;
     

@@ -17,6 +17,11 @@ public class InternalPortSampled extends InternalPort
 
 	public void writeObject (OjrType obj)
 	{
+		if (! obj.isValid())
+		{
+			return;
+		}
+		
 		Debug.debug("[InternalPortSampled] writeObject called");
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
