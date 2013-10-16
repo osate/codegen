@@ -11,6 +11,9 @@ import java.io.Serializable;
 
 import org.osate.runtime.types.OjrType;
 
+
+
+
 public class InternalPortSampled extends InternalPort
 {
 
@@ -30,11 +33,18 @@ public class InternalPortSampled extends InternalPort
 		  out = new ObjectOutputStream(bos);   
 		  out.writeObject(obj);
 		  byte[] yourBytes = bos.toByteArray();
+		  if (yourBytes.length > BUFFER_SIZE)
+		  {
+			  Debug.debug("[InternalPortSample] cannot write, object too big");
+			  return;
+		  }
 		  this.bufsize = yourBytes.length; 
 		  for (int i = 0 ; i < yourBytes.length ; i++)
 		  {
 			  buffer[i] = yourBytes[i];
 		  }
+			Debug.debug("[InternalPortSampled] write " + yourBytes.length + " bytes");
+
 		} 
 		catch (IOException ioe)
 		{
@@ -65,6 +75,8 @@ public class InternalPortSampled extends InternalPort
 		Debug.debug("[InternalPortSampled] readObject called");
 
 		byte[] tmp = new byte[this.bufsize];
+		Debug.debug("[InternalPortSampled] read " + this.bufsize + " bytes");
+
 		for (int i = 0 ; i < this.bufsize ; i++)
 		{
 			tmp[i] = buffer[i];
@@ -75,6 +87,8 @@ public class InternalPortSampled extends InternalPort
 		  in = new ObjectInputStream(bis);
 			OjrType newObj = (OjrType) in.readObject();
 			newObj.copy(obj);
+			Debug.debug("[InternalPortSampled] obj " + obj);
+
 		}
 		catch (IOException ioe)
 		{

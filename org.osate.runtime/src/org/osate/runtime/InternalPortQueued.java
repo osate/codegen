@@ -13,10 +13,17 @@ import org.osate.runtime.types.OjrType;
 
 public class InternalPortQueued extends InternalPort
 {
+	public static final int OVERFLOW_PROTOCOL_DROPOLDEST 	= 1;
+	public static final int OVERFLOW_PROTOCOL_DROPNEWEST 	= 2;
+	public static final int OVERFLOW_PROTOCOL_ERROR 		= 3;
+	
 	private int maxSize;
 	private int actualSize;
 	private int timeout;
 	private int objectsSize[];
+	private int overflowProtocol = OVERFLOW_PROTOCOL_DROPOLDEST;
+	
+
 	
 	public InternalPortQueued ()
 	{
@@ -31,6 +38,16 @@ public class InternalPortQueued extends InternalPort
 	public int getTimeout ()
 	{
 		return this.timeout;
+	}
+	
+	public void setOverflowProtocol (int p)
+	{
+		this.overflowProtocol = p;
+	}
+	
+	public int getOverflowProtocol ()
+	{
+		return (this.overflowProtocol);
 	}
 	
 	public void setTimeout (int t)

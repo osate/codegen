@@ -15,10 +15,10 @@ public abstract class InternalPort
 {
 	protected byte buffer[];
 	protected int bufsize;
-	
+	public static final int BUFFER_SIZE = 128*1024;
 	public InternalPort ()
 	{
-		this.buffer = new byte[1024];
+		this.buffer = new byte[BUFFER_SIZE];
 	}
 	
 	public abstract void readObject (OjrType obj);
