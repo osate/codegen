@@ -117,9 +117,9 @@ public class InternalPortQueued extends InternalPort
 		{
 			buffer[i] = buffer[readSize + i];
 		}
-		for (int i = 1 ; i < this.actualSize ; i++)
+		for (int i = 1 ; i < this.maxSize ; i++)
 		{
-			objectsSize[i] = buffer[readSize + i];
+			objectsSize[i] = objectsSize[i+1];
 		}
 		this.actualSize = this.actualSize - 1;
 		ByteArrayInputStream bis = new ByteArrayInputStream(tmp);
@@ -158,26 +158,39 @@ public class InternalPortQueued extends InternalPort
 	public synchronized void  writeObject(OjrType obj) 
 	{
 		int bufpos = 0;
+		int position = 0;
+		boolean useOverflow = false;
 		
 		if (! obj.isValid())
 		{
 			return;
 		}
-		
-		while (this.actualSize >= this.maxSize)
+		System.out.println("actual size" + this.actualSize + " max size " + this.maxSize);
+
+		if ((this.actualSize >= this.maxSize) && (this.overflowProtocol == OVERFLOW_PROTOCOL_ERROR))
 		{
-			try 
-			{
-				
-				wait(this.timeout);
-			} 
-			catch (InterruptedException e) 
-			{
-				// TODO Auto-generated catch block
-				Debug.debug("[InternalPortQueued] InterruptedException exception in writeObject()");
-				e.printStackTrace();
-			}
+			Debug.debug("[InternalPortQueued] overflow protocol is error and queue is already full");
+			return;
 		}
+		
+		position = this.actualSize;
+		
+		if ((this.actualSize >= this.maxSize) && (this.overflowProtocol == OVERFLOW_PROTOCOL_DROPNEWEST))
+		{
+			Debug.debug("[InternalPortQueued] overflow protocol is dropoldest");
+			System.out.println("dropoldest");
+			position = this.maxSize;
+			useOverflow = true;
+		}
+		
+		if ((this.actualSize >= this.maxSize) && (this.overflowProtocol == OVERFLOW_PROTOCOL_DROPOLDEST))
+		{
+			Debug.debug("[InternalPortQueued] overflow protocol is dropoldest");
+			position = 0;
+			useOverflow = true;
+		}
+		
+		
 		Debug.debug("[InternalPortQueued] writeObject called");
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -187,13 +200,18 @@ public class InternalPortQueued extends InternalPort
 		  out.writeObject(obj);
 		  byte[] yourBytes = bos.toByteArray();
 		  
-		  for (int i = 0 ; i < this.actualSize ; i++)
+		  for (int i = 0 ; i < position ; i++)
 		  {
 			  bufpos = bufpos + this.objectsSize[i];
 		  }
 		  
-		  this.objectsSize[this.actualSize] = yourBytes.length;
-		  this.actualSize = this.actualSize + 1;
+		  this.objectsSize[position] = yourBytes.length;
+		  
+		  if (! useOverflow)
+		  {
+			  this.actualSize = this.actualSize + 1;
+		  }
+		  
 		  for (int i = 0 ; i < yourBytes.length ; i++)
 		  {
 			  buffer[bufpos + i] = yourBytes[i];
