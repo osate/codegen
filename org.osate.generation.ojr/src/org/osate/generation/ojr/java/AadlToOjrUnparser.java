@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.osate.aadl2.EnumerationLiteral;
 import org.eclipse.emf.common.util.EList;
 import org.osate.aadl2.AnnexSubclause;
 import org.osate.aadl2.ComponentCategory;
@@ -306,8 +307,12 @@ private BehaviorAnnex getBa(FeatureInstance fi) {
         }
       }
     }
+    EnumerationLiteral el = (EnumerationLiteral) GetProperties.getOverflowHandlingProtocol(fi);
+    OsateDebug.osateDebug("el" + el);
+    
     double timeout = GetProperties.getComputeDeadlineinMilliSec(fi);
     queueInfo.timeout = (int) timeout;
+    queueInfo.overflowProtocol = el.getName();
     if(getQueueInfo((Port)fi.getFeature(), queueInfo))
     {
       pp.bufferInfo.add(queueInfo) ;
@@ -474,8 +479,23 @@ private BehaviorAnnex getBa(FeatureInstance fi) {
 	     mainImplCode.addOutput("Deployment." + GenerationUtilsJava.getGenerationJavaIdentifier(info.id));
 	     mainImplCode.addOutputNewline (".setSize ("+info.size+");");
 	     mainImplCode.addOutput("Deployment." + GenerationUtilsJava.getGenerationJavaIdentifier(info.id));
-	     mainImplCode.addOutput(".setTimeout ("+info.timeout+");\n");
-
+	     mainImplCode.addOutputNewline(".setTimeout ("+info.timeout+");");
+	     
+	     if (info.overflowProtocol.equalsIgnoreCase("dropoldest"))
+	     {
+		     mainImplCode.addOutput("Deployment." + GenerationUtilsJava.getGenerationJavaIdentifier(info.id));
+		     mainImplCode.addOutputNewline(".setOverflowProtocol (InternalPortQueued.OVERFLOW_PROTOCOL_DROPOLDEST);\n");
+	     }
+	     if (info.overflowProtocol.equalsIgnoreCase("dropnewest"))
+	     {
+		     mainImplCode.addOutput("Deployment." + GenerationUtilsJava.getGenerationJavaIdentifier(info.id));
+		     mainImplCode.addOutputNewline(".setOverflowProtocol (InternalPortQueued.OVERFLOW_PROTOCOL_DROPNEWEST);\n");
+	     }
+	     if (info.overflowProtocol.equalsIgnoreCase("error"))
+	     {
+		     mainImplCode.addOutput("Deployment." + GenerationUtilsJava.getGenerationJavaIdentifier(info.id));
+		     mainImplCode.addOutputNewline(".setOverflowProtocol (InternalPortQueued.OVERFLOW_PROTOCOL_ERROR);\n");
+	     }
 	   }
 //   for(QueueInfo info: pp.bufferInfo)
 //   {
@@ -1848,6 +1868,8 @@ private void genDeploymentImpl(ProcessorSubcomponent processor,
     
 	public String uniqueId = null;
     
+	private String overflowProtocol = null;
+	
 	public long size = -1 ;
 	
 	private int timeout = -1;
