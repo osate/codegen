@@ -630,8 +630,8 @@ public class AadlToJavaUnparser extends AadlProcessingSwitch
                 {
                   rep += "," ;
                 }
-                enumDeclaration.append("\t"+id + "_" +
-                        enumString.getValue() + rep+"\n");
+                String enumValue = id + "_" + enumString.getValue();
+                enumDeclaration.append("\t"+ GenerationUtilsJava.getGenerationJavaIdentifier(enumValue) + rep+"\n");
               }
             }
           }

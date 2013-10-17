@@ -33,7 +33,8 @@ public class AadlOjrTransformation extends
 //		 "ACG/targets/ojr/QueuingCommunications",
 //		 "ACG/targets/ojr/SamplingCommunications",
   		 "ACG/targets/ojr/ExpandThreadsDispatchProtocol",
-  		 "ACG/PeriodicDelayedCommunication/SharedRules"
+  		 "ACG/PeriodicDelayedCommunication/SharedRules",
+  		"helpers/LanguageSpecificitiesC"
         };
   }
   

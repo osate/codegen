@@ -102,6 +102,24 @@ public class GenerationUtilsJava
 		i = res.indexOf(".");
 	}
 	
+	if (res.contains("INSERTDOTHERE"))
+	{
+		int pos = res.indexOf("INSERTDOTHERE");
+		String s1 = res.substring(1, pos);
+		String s2 = res.substring(pos+13, res.length());
+		res = s1 + "." + s2;
+		
+
+	}
+	
+	if (res.contains( "= "))
+	{
+		int pos = res.lastIndexOf("= ");
+		String s1 = res.substring(0, pos + 2);
+		String s2 = res.substring(pos + 2, pos + 3);
+		String s3 = res.substring(pos + 3, res.length());
+		res = s1 + s2.toUpperCase() + s3;
+	}
     return res;
   }
 

@@ -12,10 +12,16 @@ import org.osate.runtime.types.Status;
 public class Services
 {
 	private static List<Task> tasks = new ArrayList<Task>(); 
-
+	public static long startTime = 0;
+	
 	public static void createTask (Thread t, int taskIdentifier, int taskPeriod)
 	{
 		Debug.debug("[Services] Create task id " + taskIdentifier);
+		if (startTime ==0)
+		{
+			startTime = System.currentTimeMillis();
+		}
+		
 		Task task = new Task(t);
 		task.setIdentifier(taskIdentifier);
 		task.setPeriod (taskPeriod); 

@@ -35,6 +35,7 @@ import org.osate.aadl2.modelsupport.UnparseText;
 import org.osate.aadl2.modelsupport.util.AadlUtil;
 import org.osate.generation.java.AadlToJavaUnparser;
 import org.osate.generation.java.GenerationUtilsJava;
+import org.osate.xtext.aadl2.properties.util.GetProperties;
 
 import fr.tpt.aadl.annex.behavior.aadlba.Any;
 import fr.tpt.aadl.annex.behavior.aadlba.AssignmentAction;
@@ -60,6 +61,7 @@ import fr.tpt.aadl.annex.behavior.aadlba.CalledSubprogramHolder;
 import fr.tpt.aadl.annex.behavior.aadlba.DataAccessHolder;
 import fr.tpt.aadl.annex.behavior.aadlba.DataComponentReference;
 import fr.tpt.aadl.annex.behavior.aadlba.DataHolder;
+import fr.tpt.aadl.annex.behavior.aadlba.DataRepresentation;
 import fr.tpt.aadl.annex.behavior.aadlba.DataSubcomponentHolder;
 import fr.tpt.aadl.annex.behavior.aadlba.DispatchCondition;
 import fr.tpt.aadl.annex.behavior.aadlba.DispatchConjunction;
@@ -442,7 +444,18 @@ public AadlBaToJavaUnparser(AnnexSubclause subclause,
         coreElementsToBeUnparsed.add(object.getDataClassifier());
         if(!init.isEmpty())
         {
-        	_codeContent.addOutput(" = "+init) ;
+ //       	_codeContent.addOutput(" = "+init) ;
+//        	if (AadlBaUtils.getDataRepresentation(object) == DataRepresentation.ENUM)
+//        	{
+//              	_codeContent.addOutput(" "+ GenerationUtilsJava.getGenerationJavaType(object.getDataClassifier().getQualifiedName())) ;
+//
+//        	}
+//        	else
+//        	{
+//        		_codeContent.addOutput(" ");
+//        	}
+          	_codeContent.addOutput(" " + GenerationUtilsJava.getGenerationJavaIdentifier(init)) ;
+
         }
         else
         {
@@ -483,12 +496,14 @@ public AadlBaToJavaUnparser(AnnexSubclause subclause,
     	    }
     		catch(Exception e)
     		{
-    			_codeContent.addOutput(GenerationUtilsJava.getGenerationJavaType(component.getQualifiedName()) + "." + GenerationUtilsJava.getGenerationJavaIdentifier(component.getQualifiedName())+"_"+object.getEnumLiteral().getValue());
+    			_codeContent.addOutput(GenerationUtilsJava.getGenerationJavaType(component.getQualifiedName()) + "." + GenerationUtilsJava.getGenerationJavaIdentifier(component.getQualifiedName() + "_"+object.getEnumLiteral().getValue()));
     		}
     	}
     	else
     	{
-    		_codeContent.addOutput(object.getEnumLiteral().getValue());
+			_codeContent.addOutput(GenerationUtilsJava.getGenerationJavaType(component.getQualifiedName()) + "." + GenerationUtilsJava.getGenerationJavaIdentifier(component.getQualifiedName() + "_"+object.getEnumLiteral().getValue()));
+
+    		//_codeContent.addOutput(object.getEnumLiteral().getValue());
     	}
         return DONE ;
       }

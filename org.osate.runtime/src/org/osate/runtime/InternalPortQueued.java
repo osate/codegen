@@ -165,7 +165,7 @@ public class InternalPortQueued extends InternalPort
 		{
 			return;
 		}
-		System.out.println("actual size" + this.actualSize + " max size " + this.maxSize);
+		//System.out.println("actual size" + this.actualSize + " max size " + this.maxSize);
 
 		if ((this.actualSize >= this.maxSize) && (this.overflowProtocol == OVERFLOW_PROTOCOL_ERROR))
 		{
