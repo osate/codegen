@@ -77,18 +77,18 @@ import org.osate.generation.java.annex.behavior.AadlBaToJavaUnparser;
 import org.osate.generation.java.annex.behavior.AadlBaToJavaUnparserAction;
 import org.osate.xtext.aadl2.properties.util.GetProperties;
 
-import fr.tpt.aadl.annex.behavior.AadlBaParserAction;
-import fr.tpt.aadl.annex.behavior.AadlBaUnParserAction;
-import fr.tpt.aadl.annex.behavior.analyzers.TypeHolder;
-import fr.tpt.aadl.annex.behavior.utils.AadlBaUtils;
-import fr.tpt.aadl.annex.behavior.utils.DimensionException;
+import org.osate.ba.AadlBaParserAction;
+import org.osate.ba.AadlBaUnParserAction;
+import org.osate.ba.analyzers.TypeHolder;
+import org.osate.ba.utils.AadlBaUtils;
+import org.osate.ba.utils.DimensionException;
 import fr.tpt.aadl.ramses.control.support.generator.AadlGenericUnparser;
 import fr.tpt.aadl.ramses.control.support.generator.GenerationException;
 import fr.tpt.aadl.ramses.control.support.services.ServiceRegistryProvider;
 import fr.tpt.aadl.ramses.util.generation.GeneratorUtils;
-import fr.tpt.aadl.utils.Aadl2Utils;
-import fr.tpt.aadl.utils.PropertyUtils;
-import fr.tpt.aadl.utils.names.DataModelProperties;
+import org.osate.utils.Aadl2Utils;
+import org.osate.utils.PropertyUtils;
+import org.osate.utils.names.DataModelProperties;
 
 public class AadlToJavaUnparser extends AadlProcessingSwitch
                              implements AadlGenericUnparser

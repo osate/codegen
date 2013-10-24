@@ -38,8 +38,8 @@ import org.osate.aadl2.util.OsateDebug;
 import org.osate.generation.java.GenerationUtilsJava;
 import org.osate.xtext.aadl2.properties.util.GetProperties;
 
-import fr.tpt.aadl.annex.behavior.aadlba.BehaviorAnnex;
-import fr.tpt.aadl.annex.behavior.utils.AadlBaVisitors;
+import org.osate.ba.aadlba.BehaviorAnnex;
+import org.osate.ba.utils.AadlBaVisitors;
 import fr.tpt.aadl.ramses.control.support.generator.AadlTargetUnparser;
 import fr.tpt.aadl.ramses.control.support.generator.GenerationException;
 import fr.tpt.aadl.ramses.control.support.generator.TargetProperties;
@@ -48,7 +48,7 @@ import fr.tpt.aadl.ramses.transformation.atl.hooks.impl.HookAccessImpl;
 import fr.tpt.aadl.ramses.util.generation.FileUtils;
 import fr.tpt.aadl.ramses.util.generation.GeneratorUtils;
 import fr.tpt.aadl.ramses.util.generation.RoutingProperties;
-import fr.tpt.aadl.utils.PropertyUtils;
+import org.osate.utils.PropertyUtils;
 
 public class AadlToOjrUnparser implements AadlTargetUnparser
 {

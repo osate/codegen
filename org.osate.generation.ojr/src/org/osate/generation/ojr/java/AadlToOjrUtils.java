@@ -9,7 +9,7 @@ import org.osate.aadl2.instance.ComponentInstance;
 import org.osate.aadl2.instance.FeatureInstance;
 
 import fr.tpt.aadl.ramses.generation.c.GenerationUtilsC;
-import fr.tpt.aadl.utils.Aadl2Utils;
+import org.osate.utils.Aadl2Utils;
 
 public class AadlToOjrUtils
 {

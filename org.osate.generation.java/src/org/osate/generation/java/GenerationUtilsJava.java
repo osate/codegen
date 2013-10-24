@@ -14,7 +14,7 @@ import org.osate.aadl2.Parameter;
 import org.osate.aadl2.Property;
 import org.osate.xtext.aadl2.properties.util.GetProperties;
 
-import fr.tpt.aadl.utils.PropertyUtils;
+import org.osate.utils.PropertyUtils;
 
 
 public class GenerationUtilsJava
