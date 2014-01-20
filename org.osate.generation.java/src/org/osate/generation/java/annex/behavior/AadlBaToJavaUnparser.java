@@ -35,8 +35,6 @@ import org.osate.aadl2.modelsupport.UnparseText;
 import org.osate.aadl2.modelsupport.util.AadlUtil;
 import org.osate.generation.java.AadlToJavaUnparser;
 import org.osate.generation.java.GenerationUtilsJava;
-import org.osate.xtext.aadl2.properties.util.GetProperties;
-
 import org.osate.ba.aadlba.Any;
 import org.osate.ba.aadlba.AssignmentAction;
 import org.osate.ba.aadlba.BehaviorActionBlock;

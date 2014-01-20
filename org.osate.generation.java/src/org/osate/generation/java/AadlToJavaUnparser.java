@@ -75,8 +75,6 @@ import org.osate.annexsupport.AnnexUnparser;
 import org.osate.annexsupport.AnnexUnparserProxy;
 import org.osate.generation.java.annex.behavior.AadlBaToJavaUnparser;
 import org.osate.generation.java.annex.behavior.AadlBaToJavaUnparserAction;
-import org.osate.xtext.aadl2.properties.util.GetProperties;
-
 import org.osate.ba.AadlBaParserAction;
 import org.osate.ba.AadlBaUnParserAction;
 import org.osate.ba.analyzers.TypeHolder;
